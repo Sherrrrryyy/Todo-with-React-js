@@ -7,6 +7,7 @@ function App() {
 
 
   const [todoList, setTodoList] = useState('')
+  
   const [todo, setTodo] = useState([
     {
       todo: "Playing Cricket",
@@ -18,9 +19,14 @@ function App() {
   const handleAddTdod = () => {
     setTodo([...todo,
     {
-      todo: todoList, id: Date.now(), completed: false
+      todo: todoList,
+      id: Date.now(),
+      completed: false
     }
     ])
+    setTodoList('')
+    
+
   }
 
   return (
