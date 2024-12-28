@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './components/Header';
 import Todo from './components/Todo';
 import Todolist from './components/Todolist';
@@ -8,23 +8,47 @@ const App = () => {
   const [todo, setTodo] = useState([]);
   const [showInput, setShowInput] = useState(false);
 
-  
-    const handleAddTodo = () => {
-      setShowInput(true);
-    }
+
+  const handleAddTodo = () => {
+    setShowInput(true);
+  }
 
   const handleSaveTodo = () => {
-    setTodo([
+    const updatedTodos = [
       ...todo,
       {
         todo: todoList,
         id: Date.now(),
         completed: false,
       },
-    ]);
+    ];
+    setTodo(updatedTodos);
+    localStorage.setItem('todos', JSON.stringify(updatedTodos));
     setTodoList('');
     setShowInput(false);
   };
+
+  useEffect(() => {
+    const savedTodos = JSON.parse(localStorage.getItem('todos'));
+    if (savedTodos) {
+      setTodo(savedTodos);
+    }
+  }, []);
+
+
+  const editTodo = (id) => {
+    const updatedTodos = todo.map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          completed: !todo.completed,
+        };
+      }
+      return todo;
+    });
+    setTodo(updatedTodos);
+    localStorage.setItem('todos', JSON.stringify(updatedTodos));
+  }
 
   return (
     <>
@@ -40,11 +64,11 @@ const App = () => {
               placeholder="Enter your todo"
             />
           )}
-           {showInput ? (
+          {showInput ? (
             <button
-            disabled={!todoList}
+              disabled={!todoList}
               onClick={handleSaveTodo}
-              className={`ml-2 bg-green-500 text-white p-2 rounded hover:bg-green-600 focus:outline-none ${!todoList && 'opacity-50 cursor-not-allowed'}`}>
+              className={`ml-2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none ${!todoList && 'opacity-50 cursor-not-allowed'}`}>
               Save
             </button>
           ) : (
@@ -56,7 +80,7 @@ const App = () => {
             </button>
           )}
         </div>
-        <Todolist todo={todo} />
+        <Todolist todo={todo} onClick={editTodo} />
       </div>
     </>
   );
