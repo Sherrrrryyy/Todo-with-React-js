@@ -6,11 +6,11 @@ const Todolist = ({todo}) => {
             {
                 todo.map((todo, ind) => {
                     return (
-                        <div
-                            className='py-5 flex justify-center'
+                        <div className='rounded-lg my-10 bg-gray-500 text-white font-bold  flex justify-between p-5 w-96'
                             key={ind}>
+                            <span className='h-4 w-4 border border-white rounded-full my-2'></span>
                             <p className='mr-16'>{todo.todo}</p>
-                            <button className='rounded-md p-1 bg-red-400'>Delete</button>
+                            <button className='rounded-md p-'>Delete</button>
                         </div>
                     )
 
